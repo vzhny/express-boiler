@@ -1,0 +1,205 @@
+import request from 'supertest';
+import app from '../app';
+import { closeDatabaseConnection } from './databaseSetup';
+
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-undef */
+
+afterAll(() => {
+  return closeDatabaseConnection();
+});
+
+const userTests = () => {
+  describe('POST /api/auth/register', () => {
+    it('should register a new user successfully (first user)', done => {
+      const userInformation = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john_doe@gmail.com',
+        password: 'test1234',
+      };
+
+      request(app)
+        .post('/api/auth/register')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { firstName, lastName, token } = body;
+
+          expect(status).toEqual(201);
+          expect(firstName).toEqual('John');
+          expect(lastName).toEqual('Doe');
+          expect(token).toBeTruthy();
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+
+    it('should register a new user successfully (second  user)', done => {
+      const userInformation = {
+        firstName: 'Sarah',
+        lastName: 'Conner',
+        email: 'sarah_conner@gmail.com',
+        password: '1234test',
+      };
+
+      request(app)
+        .post('/api/auth/register')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { firstName, lastName, token } = body;
+
+          expect(status).toEqual(201);
+          expect(firstName).toEqual('Sarah');
+          expect(lastName).toEqual('Conner');
+          expect(token).toBeTruthy();
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+
+    it('should fail the registration of an email already in use', done => {
+      const userInformation = {
+        firstName: 'Harry',
+        lastName: 'Stevens',
+        email: 'john_doe@gmail.com',
+        password: 'test1234',
+      };
+
+      request(app)
+        .post('/api/auth/register')
+        .send(userInformation)
+        .then(res => {
+          const { status } = res;
+
+          expect(status).toEqual(400);
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+
+    it('should enforce a password minimum length of 6 characters', done => {
+      const userInformation = {
+        firstName: 'Harry',
+        lastName: 'Stevens',
+        email: 'harry_stevens@gmail.com',
+        password: 'weak',
+      };
+
+      request(app)
+        .post('/api/auth/register')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { message } = body;
+
+          expect(status).toEqual(400);
+          expect(message).toEqual('Please enter a password with a length of 6 or more characters.');
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+  });
+
+  describe('POST /api/auth/login', () => {
+    it("should respond with the user's first and last names, a true auth flag and auth token after successfully logging in", done => {
+      const userInformation = {
+        email: 'john_doe@gmail.com',
+        password: 'test1234',
+      };
+
+      request(app)
+        .post('/api/auth/login')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { firstName, lastName, token } = body;
+
+          expect(status).toEqual(200);
+          expect(firstName).toEqual('John');
+          expect(lastName).toEqual('Doe');
+          expect(token).toBeTruthy();
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+
+    it('should respond with a general error message when an unregistered email address is entered', done => {
+      const userInformation = {
+        email: 'steve@gmail.com',
+        password: 'non-registered',
+      };
+
+      request(app)
+        .post('/api/auth/login')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { message } = body;
+
+          expect(status).toEqual(404);
+          expect(message).toEqual('Could not find user or wrong password. Please try again.');
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+
+    it('should respond with a general error message when an incorrect password is entered', done => {
+      const userInformation = {
+        email: 'john_doe@gmail.com',
+        password: '1234test',
+      };
+
+      request(app)
+        .post('/api/auth/login')
+        .send(userInformation)
+        .then(res => {
+          const { status, body } = res;
+          const { message } = body;
+
+          expect(status).toEqual(404);
+          expect(message).toEqual('Could not find user or wrong password. Please try again.');
+
+          done();
+        })
+        .catch(error => {
+          const { message } = error;
+
+          done(message);
+        });
+    });
+  });
+};
+
+export default userTests;
