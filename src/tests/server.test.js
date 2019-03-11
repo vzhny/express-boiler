@@ -6,12 +6,12 @@ import { repository } from '../../package.json';
 
 /* eslint-disable consistent-return */
 
-const serverTests = () => {
-  beforeAll(() => {
-    dropAllTables();
-    server.close();
-  });
+beforeAll(() => {
+  dropAllTables();
+  server.close();
+});
 
+const serverTests = () => {
   describe('GET /', () => {
     it('should send the correct message to check the documentation', done => {
       request(app)
