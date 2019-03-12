@@ -1,13 +1,11 @@
 import request from 'supertest';
 import app from '@/app';
 import server from '@/server';
-import { dropAllTables } from '@/tests/databaseSetup';
 import { repository } from '_root/package.json';
 
 /* eslint-disable consistent-return */
 
-beforeAll(() => {
-  dropAllTables();
+beforeEach(() => {
   server.close();
 });
 
