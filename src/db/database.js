@@ -5,6 +5,8 @@ import Knex from 'knex';
 import { Model } from 'objection';
 import knexConfig from '../../knexfile';
 
+/* eslint-disable no-unused-vars */
+
 const env = process.env.NODE_ENV;
 let config = '';
 
@@ -33,13 +35,14 @@ const database = new Client({
 
 // Listening for the connection to the database
 const connectToDatabase = async () => {
-  const [error, none] = await to(database.connect()); // eslint-disable-line
+  const [error, none] = await to(database.connect());
 
   if (error) {
-    return console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error);
+    console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error);
+    return;
   }
 
-  return console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
+  console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
 };
 
 // Listening for any errors from the database
