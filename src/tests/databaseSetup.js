@@ -4,7 +4,7 @@ export const dropAllTables = () => {
   database
     .query('TRUNCATE users;')
     .then(result => console.log("'users' tables truncated."))
-    .catch(error => console.log("An error occurred truncating the 'users' table", error));
+    .catch(error => console.log("An error occurred truncating the 'users' table.", error));
   // Add any more tables that need to be cleared below
 };
 
