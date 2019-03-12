@@ -16,9 +16,10 @@ const plugins = [
   [
     'babel-plugin-module-resolver',
     {
-      root: ['./src'],
+      root: ['./'],
       alias: {
         '@': './src',
+        _root: '.',
       },
     },
   ],
