@@ -1,3 +1,4 @@
+import to from 'await-to-js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import shortId from 'shortid';
@@ -45,40 +46,42 @@ export const register = (req, res) => {
 };
 
 // POST login route controller
-export const login = (req, res) => {
+export const login = async (req, res) => {
   const { email, password } = req.body;
 
-  User.query()
-    .select()
-    .where('email', email)
-    .first()
-    .then(user => {
-      const { firstName, lastName, userId } = user;
+  const [error, user] = await to(
+    User.query()
+      .select()
+      .where('email', email)
+      .first()
+  );
 
-      if (!user) {
-        return res.status(404).json({
-          message: 'Could not find user or wrong password. Please try again.',
-        });
-      }
-
-      if (bcrypt.compareSync(password, user.password)) {
-        const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: 86400 });
-
-        return res.status(200).json({
-          firstName,
-          lastName,
-          token,
-        });
-      }
-
-      return res.status(404).json({
-        message: 'Could not find user or wrong password. Please try again.',
-      });
-    })
-    .catch(error => {
-      return res.status(404).json({
-        message: 'Could not find user or wrong password. Please try again.',
-        error: env !== 'production' ? error : {},
-      });
+  if (error) {
+    return res.status(404).json({
+      message: 'Could not find user or wrong password. Please try again.',
+      error: env !== 'production' ? error : {},
     });
+  }
+
+  const { firstName, lastName, userId } = user;
+
+  if (!user) {
+    return res.status(404).json({
+      message: 'Could not find user or wrong password. Please try again.',
+    });
+  }
+
+  if (bcrypt.compareSync(password, user.password)) {
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: 86400 });
+
+    return res.status(200).json({
+      firstName,
+      lastName,
+      token,
+    });
+  }
+
+  return res.status(404).json({
+    message: 'Could not find user or wrong password. Please try again.',
+  });
 };
