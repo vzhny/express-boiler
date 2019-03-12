@@ -1,4 +1,5 @@
 import {} from 'dotenv/config';
+import to from 'await-to-js';
 import { Client } from 'pg';
 import Knex from 'knex';
 import { Model } from 'objection';
@@ -31,14 +32,15 @@ const database = new Client({
 });
 
 // Listening for the connection to the database
-database
-  .connect()
-  .then(() => {
-    if (env !== 'test') {
-      console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
-    }
-  })
-  .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
+const connectToDatabase = async () => {
+  const [error, none] = await to(database.connect()); // eslint-disable-line
+
+  if (error) {
+    return console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error);
+  }
+
+  return console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
+};
 
 // Listening for any errors from the database
 database.on('error', error => {
@@ -84,4 +86,4 @@ process.once('SIGUSR2', () => {
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
 });
 
-export default database;
+export { database, connectToDatabase };
