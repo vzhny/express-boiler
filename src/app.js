@@ -6,9 +6,9 @@ import morgan from 'morgan';
 import timestamp from 'time-stamp';
 import helmet from 'helmet';
 import cors from 'cors';
-import { connectToDatabase } from './db/database';
-import routes from './api/routes';
-import { repository } from '../package.json';
+import { connectToDatabase } from '@/db/database';
+import routes from '@/api/routes';
+import { repository } from '_root/package.json';
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 

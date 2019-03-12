@@ -1,8 +1,8 @@
 import request from 'supertest';
-import app from '../app';
-import server from '../server';
-import { dropAllTables } from './databaseSetup';
-import { repository } from '../../package.json';
+import app from '@/app';
+import server from '@/server';
+import { dropAllTables } from '@/tests/databaseSetup';
+import { repository } from '_root/package.json';
 
 /* eslint-disable consistent-return */
 

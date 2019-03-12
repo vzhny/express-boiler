@@ -1,5 +1,5 @@
-import serverTests from './server.test';
-import userTests from './users.test';
+import serverTests from '@/tests/server.test';
+import userTests from '@/tests//users.test';
 
 /* eslint-disable jest/valid-describe */
 

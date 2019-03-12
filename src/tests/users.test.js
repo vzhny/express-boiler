@@ -1,6 +1,6 @@
 import request from 'supertest';
-import app from '../app';
-import { closeDatabaseConnection } from './databaseSetup';
+import app from '@/app';
+import { closeDatabaseConnection } from '@/tests/databaseSetup';
 
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */

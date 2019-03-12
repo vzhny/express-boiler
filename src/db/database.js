@@ -3,7 +3,7 @@ import to from 'await-to-js';
 import { Client } from 'pg';
 import Knex from 'knex';
 import { Model } from 'objection';
-import knexConfig from '../../knexfile';
+import knexConfig from '_root/knexfile';
 
 /* eslint-disable no-unused-vars */
 
