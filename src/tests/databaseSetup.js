@@ -1,4 +1,4 @@
-import database from '../db/database';
+import { database } from '../db/database';
 
 export const dropAllTables = () => {
   database
