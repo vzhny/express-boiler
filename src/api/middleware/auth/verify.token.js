@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import handleError from '../../helpers/handleError';
 
 /* eslint-disable consistent-return */
 
@@ -11,9 +12,8 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     didNotEncounterError = false;
 
-    return res.status(403).json({
-      message: 'No authentication token was provided.',
-    });
+    const message = 'No authentication token was provided.';
+    return handleError(res, 403, message);
   }
 
   // eslint-disable-next-line
@@ -21,9 +21,8 @@ const verifyToken = (req, res, next) => {
     if (error) {
       didNotEncounterError = false;
 
-      return res.status(500).json({
-        message: 'Failed to authenticate the provided token.',
-      });
+      const message = 'Failed to authenticate the provided token.';
+      return handleError(res, 500, message);
     }
 
     res.locals.userId = decoded.id;
