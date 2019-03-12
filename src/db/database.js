@@ -1,8 +1,11 @@
 import {} from 'dotenv/config';
+import to from 'await-to-js';
 import { Client } from 'pg';
 import Knex from 'knex';
 import { Model } from 'objection';
 import knexConfig from '../../knexfile';
+
+/* eslint-disable no-unused-vars */
 
 const env = process.env.NODE_ENV;
 let config = '';
@@ -31,19 +34,23 @@ const database = new Client({
 });
 
 // Listening for the connection to the database
-database
-  .connect()
-  .then(() => {
-    if (env !== 'test') {
-      console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
-    }
-  })
-  .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
+const connectToDatabase = async () => {
+  const [error, none] = await to(database.connect());
+
+  if (error) {
+    console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error);
+    return;
+  }
+
+  console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
+};
 
 // Listening for any errors from the database
 database.on('error', error => {
   console.error('Postgres encountered an error and disconnected', error);
 });
+
+/* Process watchers  */
 
 // Listening for ctrl+c app termination from terminal
 process.on('SIGINT', () => {
@@ -53,6 +60,7 @@ process.on('SIGINT', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGINT)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
@@ -66,6 +74,7 @@ process.on('SIGTERM', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGTERM)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
@@ -79,9 +88,10 @@ process.once('SIGUSR2', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGUSR2)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
 });
 
-export default database;
+export { database, connectToDatabase };

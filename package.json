@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "await-to-js": "^2.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
