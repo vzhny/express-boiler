@@ -2,8 +2,8 @@ import to from 'await-to-js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import shortId from 'shortid';
-import User from '../../models/user.model';
-import handleError from '../helpers/handleError';
+import User from '@/models/user.model';
+import handleError from '@/api/helpers/handleError';
 
 /* eslint-disable consistent-return */
 

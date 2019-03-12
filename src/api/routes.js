@@ -1,6 +1,6 @@
 import express from 'express';
-import { register, login } from './controllers/user.controllers';
-import verifyToken from './middleware/auth/verify.token'; // eslint-disable-line
+import { register, login } from '@/api/controllers/user.controllers';
+import verifyToken from '@/api/middleware/auth/verify.token'; // eslint-disable-line
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import handleError from '../../helpers/handleError';
+import handleError from '@/api/helpers/handleError';
 
 /* eslint-disable consistent-return */
 
