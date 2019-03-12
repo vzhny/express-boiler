@@ -38,7 +38,8 @@
     "coverageDirectory": "./src/tests/coverage"
   },
   "moduleNameMapper": {
-    "@/(.*)$": "<rootDir>/src/$1"
+    "@/(.*)$": "<rootDir>/src/$1",
+    "_root/(.*)$": "<rootDir>/$1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
