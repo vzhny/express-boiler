@@ -3,19 +3,18 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import shortId from 'shortid';
 import User from '../../models/user.model';
+import handleError from '../helpers/handleError';
 
 /* eslint-disable consistent-return */
-
-const env = process.env.NODE_ENV;
 
 // POST register route controller
 export const register = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (password.length <= 6) {
-    return res.status(400).json({
-      message: 'Please enter a password with a length of 6 or more characters.',
-    });
+    const message = 'Please enter a password with a length of 6 or more characters.';
+
+    return handleError(res, 400, message);
   }
 
   const [error, user] = await to(
@@ -29,10 +28,8 @@ export const register = async (req, res) => {
   );
 
   if (error) {
-    return res.status(400).json({
-      message: 'There was an error registering, please try again.',
-      error: env !== 'production' ? error : {},
-    });
+    const message = 'There was an error registering, please try again later.';
+    return handleError(res, 400, message, error);
   }
 
   const { userId } = user;
@@ -49,6 +46,7 @@ export const register = async (req, res) => {
 // POST login route controller
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  let message = '';
 
   const [error, user] = await to(
     User.query()
@@ -58,22 +56,19 @@ export const login = async (req, res) => {
   );
 
   if (error) {
-    return res.status(404).json({
-      message: 'Could not find user or wrong password. Please try again.',
-      error: env !== 'production' ? error : {},
-    });
+    message = 'Could not find user or wrong password. Please try again.';
+    return handleError(res, 404, message, error);
+  }
+
+  if (!user) {
+    message = 'Could not find user or wrong password. Please try again.';
+    return handleError(res, 404, message);
   }
 
   const { firstName, lastName, userId } = user;
 
-  if (!user) {
-    return res.status(404).json({
-      message: 'Could not find user or wrong password. Please try again.',
-    });
-  }
-
   if (bcrypt.compareSync(password, user.password)) {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: 86400 });
+    const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
     return res.status(200).json({
       firstName,
@@ -82,7 +77,6 @@ export const login = async (req, res) => {
     });
   }
 
-  return res.status(404).json({
-    message: 'Could not find user or wrong password. Please try again.',
-  });
+  message = 'Could not find user or wrong password. Please try again.';
+  return handleError(res, 404, message);
 };
