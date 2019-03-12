@@ -4,6 +4,8 @@
 
 Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from www.flaticon.com.
 
+![Travis (.org)](https://img.shields.io/travis/vzhny/express-boiler.svg?style=flat-square)
+
 A minimal ES6+ express app boilerplate, with included authentication!
 
 This project is useful if you want to jump right into developing an express application without having to worry about the set-up, if you want to take advantage of the newest JavaScript ES6+ syntax, if you are at a hackathon and need to begin coding as soon as possible, or if you simply want to learn how to make your own boilerplate!
@@ -52,8 +54,6 @@ JWT_SECRET_TEST
 PG_DB_NAME_TEST
 ```
 
-The express app uses a connection string by default, but if you wish to use a connection config object, you can remove those keys and references in the `knexfile.js` and `database.js` files and use the object keys.
-
 ## Running the Project
 
 - Run `yarn dev` to launch a development environment with the app running on `localhost:3000` (or the specified port defined in `process.env.PORT`).
@@ -81,6 +81,9 @@ import serverTests from './server.test';
 import userTests from './users.test';
 
 /* eslint-disable jest/valid-describe */
+beforeAll(() => rollbackAndMigrate());
+
+afterAll(() => closeDatabaseConnection());
 
 describe('Server Tests', serverTests);
 describe('User Tests', userTests);
@@ -92,8 +95,8 @@ Each test file utilizes the `done()` function to call the next test and so on.
 
 Also located in the tests/ folder is a `databaseSetup.js` file. This file exports two functions:
 
-- `dropAllTables()` is self-explanatory and is called in the `beforeAll()` jest hook in the test file that contains the first tests to run (by default, the `server.test.js` file).
-- `closeDatabaseConnection()` is self-explanatory and is called in the `afterAll()` jest hook in the test file that contains the last tests to be run (by default, the `users.test.js` file).
+- `rollbackAndMigrate()` is self-explanatory and is called in the `beforeAll()` jest hook in the `index.test.js` file.
+- `closeDatabaseConnection()` is self-explanatory and is called in the `afterAll()` jest hook in the `index.test.js` file.
 
 ## To-Do/Bug List
 

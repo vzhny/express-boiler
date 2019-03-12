@@ -1,12 +1,11 @@
 import request from 'supertest';
 import app from '@/app';
-import { closeDatabaseConnection } from '@/tests/databaseSetup';
+import server from '@/server';
 
 /* eslint-disable no-unused-expressions */
-/* eslint-disable no-undef */
 
-afterAll(() => {
-  return closeDatabaseConnection();
+beforeEach(() => {
+  server.close();
 });
 
 const userTests = () => {

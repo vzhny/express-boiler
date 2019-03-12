@@ -38,16 +38,16 @@ const connectToDatabase = async () => {
   const [error, none] = await to(database.connect());
 
   if (error) {
-    console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error);
+    console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error);
     return;
   }
 
-  console.log(`Postgres connected to ${process.env.PG_DB_NAME}`);
+  console.log(`Postgres connected to ${process.env.PG_DB_NAME}.`);
 };
 
 // Listening for any errors from the database
 database.on('error', error => {
-  console.error('Postgres encountered an error and disconnected', error);
+  console.error('Postgres encountered an error and disconnected.', error);
 });
 
 /* Process watchers  */
@@ -58,12 +58,12 @@ process.on('SIGINT', () => {
     .end()
     .then(() => {
       if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGINT)');
+        console.log('Postgres disconnected through app termination (SIGINT).');
       }
 
       process.exit(0);
     })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
+    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
 });
 
 // Listening for app termination from heroku
@@ -72,12 +72,12 @@ process.on('SIGTERM', () => {
     .end()
     .then(() => {
       if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGTERM)');
+        console.log('Postgres disconnected through app termination (SIGTERM).');
       }
 
       process.exit(0);
     })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
+    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
 });
 
 // Listening (once) for nodemon restart
@@ -86,12 +86,12 @@ process.once('SIGUSR2', () => {
     .end()
     .then(() => {
       if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGUSR2)');
+        console.log('Postgres disconnected through app termination (SIGUSR2).');
       }
 
       process.exit(0);
     })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
+    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
 });
 
 export { database, connectToDatabase };
