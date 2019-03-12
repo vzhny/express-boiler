@@ -6,12 +6,17 @@ Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from www.flatic
 
 A minimal ES6+ express app boilerplate, with included authentication!
 
+This project is useful if you want to jump right into developing an express application without having to worry about the set-up, if you want to take advantage of the newest JavaScript ES6+ syntax, if you are at a hackathon and need to begin coding as soon as possible, or if you simply want to learn how to make your own boilerplate!
+
+Feel free to fork the project, or submit pull requests if you want to add an interesting or helpful feature!
+
 ## Features
 
 - ES6+ syntax available via Babel 7.
 - SQL database connectivity (by default set to postgreSQL) with Objection.js used as the ORM, along with Knex.
 - Full user register and log in routes and functionality with authentication via Json Web Token and token verification middleware included.
 - Testing with Jest and Supertest.
+- Import aliases! Use `@` to point to `./src/` and `_root` to point to `./` (the root directory).
 
 ## Requirements
 
