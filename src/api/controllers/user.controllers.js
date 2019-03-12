@@ -9,7 +9,7 @@ import User from '../../models/user.model';
 const env = process.env.NODE_ENV;
 
 // POST register route controller
-export const register = (req, res) => {
+export const register = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (password.length <= 6) {
@@ -18,31 +18,32 @@ export const register = (req, res) => {
     });
   }
 
-  User.query()
-    .insert({
+  const [error, user] = await to(
+    User.query().insert({
       userId: shortId.generate(),
       firstName,
       lastName,
       email,
       password: bcrypt.hashSync(password, 10),
     })
-    .then(user => {
-      const { userId } = user;
+  );
 
-      const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: 86400 });
-
-      return res.status(201).json({
-        firstName,
-        lastName,
-        token,
-      });
-    })
-    .catch(error => {
-      return res.status(400).json({
-        message: 'There was an error registering, please try again.',
-        error: env !== 'production' ? error : {},
-      });
+  if (error) {
+    return res.status(400).json({
+      message: 'There was an error registering, please try again.',
+      error: env !== 'production' ? error : {},
     });
+  }
+
+  const { userId } = user;
+
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+  return res.status(201).json({
+    firstName,
+    lastName,
+    token,
+  });
 };
 
 // POST login route controller
