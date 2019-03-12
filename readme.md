@@ -99,3 +99,23 @@ Jest has detected the following 1 open handle potentially keeping Jest from exit
 ```
 
 Instead of using the `--forceExit` flag with jest, the boilerplate currently calls `process.exit(0)` from `closeDatabaseConnection()`. Currently working on trying to figure out how to resolve this issue.
+
+Medium priority.
+
+---
+
+When terminating the app via SIGINT (`Ctrl + C`) after a request, while the app indeed successfully terminates, the following error appears in the console:
+
+```
+Error [ERR_STREAM_WRITE_AFTER_END]: write after end
+    at writeAfterEnd (_stream_writable.js:248:12)
+    at Socket.Writable.write (_stream_writable.js:296:5)
+    at Connection.end (/home/vzhny/Documents/express-boiler/node_modules/pg/lib/connection.js:320:22)
+    at Client.end (/home/vzhny/Documents/express-boiler/node_modules/pg/lib/client.js:489:21)
+    at process.end (/home/vzhny/Documents/express-boiler/src/db/database.js:58:6)
+    at process.emit (events.js:197:13)
+```
+
+Research on Google isn't resulting in any useful information on how to deal with this error, but it does not affect app disconnection.
+
+Low priority.
