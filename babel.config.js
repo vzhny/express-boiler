@@ -10,6 +10,18 @@ const presets = [
   ],
 ];
 
-const plugins = ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-proposal-class-properties'];
+const plugins = [
+  '@babel/plugin-proposal-object-rest-spread',
+  '@babel/plugin-proposal-class-properties',
+  [
+    'babel-plugin-module-resolver',
+    {
+      root: ['./src'],
+      alias: {
+        '@': './src',
+      },
+    },
+  ],
+];
 
 module.exports = { presets, plugins };
