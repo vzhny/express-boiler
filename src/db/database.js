@@ -50,6 +50,8 @@ database.on('error', error => {
   console.error('Postgres encountered an error and disconnected', error);
 });
 
+/* Process watchers  */
+
 // Listening for ctrl+c app termination from terminal
 process.on('SIGINT', () => {
   database
@@ -58,6 +60,7 @@ process.on('SIGINT', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGINT)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
@@ -71,6 +74,7 @@ process.on('SIGTERM', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGTERM)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
@@ -84,6 +88,7 @@ process.once('SIGUSR2', () => {
       if (env !== 'test') {
         console.log('Postgres disconnected through app termination (SIGUSR2)');
       }
+
       process.exit(0);
     })
     .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}`, error));
