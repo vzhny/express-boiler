@@ -8,14 +8,18 @@ import knexConfig from '_root/knexfile';
 /* eslint-disable no-unused-vars */
 
 const env = process.env.NODE_ENV;
-let config = '';
+let config = {};
 
-if (env === 'development') {
-  config = knexConfig.development;
-} else if (env === 'test') {
-  config = knexConfig.test;
-} else {
-  config = knexConfig.production;
+switch (env) {
+  case 'development':
+    config = { ...knexConfig.development };
+    break;
+  case 'test':
+    config = { ...knexConfig.test };
+    break;
+  default:
+    config = { ...knexConfig.production };
+    break;
 }
 
 // Connecting knex to postgres
