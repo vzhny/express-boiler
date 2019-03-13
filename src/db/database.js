@@ -28,10 +28,6 @@ const knex = Knex(config);
 // Linking objection models to knex, globally
 Model.knex(knex);
 
-if (env !== 'test') {
-  console.log(`Postgres is attempting to connect to ${process.env.PG_DB_NAME}.`);
-}
-
 // Initial database connection attempt
 const database = new Client({
   connectionString: config.connection,
