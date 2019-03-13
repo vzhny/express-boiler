@@ -44,10 +44,17 @@ const connectToDatabase = async () => {
   }
 };
 
-// Listening for any errors from the database
-database.on('error', error => {
-  console.error('Postgres encountered an error and disconnected.', error);
-});
+// Disconnecting from the database on both knex and pg
+const disconnectFromDatabase = async (message = `Sucessfully disconnected from ${dbName}.`) => {
+  try {
+    await knex.destroy();
+    await database.end();
+
+    console.log(`\n${message}\n`);
+  } catch (error) {
+    console.log(`There was an error disconnecting from ${dbName}.`, error);
+  }
+};
 
 /* Process watchers  */
 
