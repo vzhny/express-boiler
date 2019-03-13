@@ -1,5 +1,5 @@
-import { database } from '@/db/database';
 import knexMigrate from 'knex-migrate';
+import knex from '@/db/database';
 
 export const rollbackAndMigrate = async () => {
   // Example logger from knex-migrate readme.
@@ -14,9 +14,10 @@ export const rollbackAndMigrate = async () => {
   }
 };
 
-export const closeDatabaseConnection = () => {
-  database
-    .end()
-    .then(() => process.exit(0))
-    .catch(error => console.log(error));
+export const closeDatabaseConnection = async () => {
+  try {
+    await knex.destroy();
+  } catch (error) {
+    console.log('There was an error closing the database connection.', error);
+  }
 };
