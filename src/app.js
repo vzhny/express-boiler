@@ -6,15 +6,13 @@ import morgan from 'morgan';
 import timestamp from 'time-stamp';
 import helmet from 'helmet';
 import cors from 'cors';
-import { connectToDatabase } from '@/db/database';
 import routes from '@/api/routes';
 import { repository } from '_root/package.json';
+import '@/db/database';
 
 dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
-
-connectToDatabase();
 
 // * Express Middleware
 if (process.env.NODE_ENV !== 'test') {
