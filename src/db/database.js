@@ -1,5 +1,4 @@
 import {} from 'dotenv/config';
-import { Client } from 'pg';
 import Knex from 'knex';
 import { Model } from 'objection';
 import knexConfig from '_root/knexfile';
@@ -22,35 +21,27 @@ switch (env) {
     break;
 }
 
-// Connecting knex to postgres
+// Initializing knex with the appropriate config
 const knex = Knex(config);
 
 // Linking objection models to knex, globally
 Model.knex(knex);
 
-// Initial database connection attempt
-const database = new Client({
-  connectionString: config.connection,
-});
+// Check for a successful connection
+knex
+  .select(1)
+  .then(result => console.log(`Successfully connected to ${dbName}.`))
+  .catch(error => console.log(`There was an error connecting to ${dbName}.`, error));
 
-// Listening for the connection to the database
-const connectToDatabase = async () => {
-  try {
-    await database.connect();
-
-    console.log(`Postgres connected to ${dbName}.`);
-  } catch (error) {
-    console.log(`Error connecting to ${dbName}.`, error);
-  }
-};
-
-// Disconnecting from the database on both knex and pg
+// Disconnecting from the database
 const disconnectFromDatabase = async (message = `Sucessfully disconnected from ${dbName}.`) => {
   try {
     await knex.destroy();
-    await database.end();
 
-    console.log(`\n${message}\n`);
+    console.log(`\n${message}`);
+
+    // Graceful termination to release the port
+    process.exit(0);
   } catch (error) {
     console.log(`There was an error disconnecting from ${dbName}.`, error);
   }
@@ -60,44 +51,20 @@ const disconnectFromDatabase = async (message = `Sucessfully disconnected from $
 
 // Listening for ctrl+c app termination from terminal
 process.on('SIGINT', () => {
-  database
-    .end()
-    .then(() => {
-      if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGINT).');
-      }
-
-      process.exit(0);
-    })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
+  const message = `Successfully disconnected from ${dbName} via SIGINT.`;
+  disconnectFromDatabase(message);
 });
 
 // Listening for app termination from heroku
 process.on('SIGTERM', () => {
-  database
-    .end()
-    .then(() => {
-      if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGTERM).');
-      }
-
-      process.exit(0);
-    })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
+  const message = `Successfully disconnected from ${dbName} via SIGTERM).`;
+  disconnectFromDatabase(message);
 });
 
 // Listening (once) for nodemon restart
 process.once('SIGUSR2', () => {
-  database
-    .end()
-    .then(() => {
-      if (env !== 'test') {
-        console.log('Postgres disconnected through app termination (SIGUSR2).');
-      }
-
-      process.exit(0);
-    })
-    .catch(error => console.log(`Error connecting to ${process.env.PG_DB_NAME}.`, error));
+  const message = `Successfully disconnected from ${dbName} via SIGUSR2.`;
+  disconnectFromDatabase(message);
 });
 
-export { database, connectToDatabase };
+export default knex;
