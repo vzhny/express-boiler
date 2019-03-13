@@ -1,29 +1,27 @@
 import {} from 'dotenv/config';
 
+const client = 'pg';
+const connection = process.env.PG_CONNECT_STRING;
+const migrations = { directory: `${__dirname}/src/db/migrations` };
+
 module.exports = {
   development: {
-    client: 'pg',
-    connection: process.env.PG_CONNECT_STRING_DEV,
-    migrations: {
-      directory: `${__dirname}/src/db/migrations`,
-    },
+    client,
+    connection,
+    migrations,
   },
   test: {
-    client: 'pg',
-    connection: process.env.PG_CONNECT_STRING_TEST,
-    migrations: {
-      directory: `${__dirname}/src/db/migrations`,
-    },
+    client,
+    connection,
+    migrations,
   },
   production: {
-    client: 'pg',
-    connection: process.env.PG_CONNECT_STRING,
+    client,
+    connection,
     pool: {
-      min: 2,
-      max: 10,
+      min: 0,
+      max: 12,
     },
-    migrations: {
-      directory: `${__dirname}/src/db/migrations`,
-    },
+    migrations,
   },
 };
