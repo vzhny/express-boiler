@@ -100,18 +100,6 @@ Also located in the tests/ folder is a `databaseSetup.js` file. This file export
 
 ## To-Do/Bug List
 
-Currently getting an error with Jest and the database connection:
-
-```
-Jest has detected the following 1 open handle potentially keeping Jest from exiting: "TCPWRAP"
-```
-
-Instead of using the `--forceExit` flag with jest, the boilerplate currently calls `process.exit(0)` from `closeDatabaseConnection()`. Currently working on trying to figure out how to resolve this issue.
-
-Medium priority.
-
----
-
 When terminating the app via SIGINT (`Ctrl + C`) after a request, while the app indeed successfully terminates, the following error appears in the console:
 
 ```
