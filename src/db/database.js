@@ -1,4 +1,3 @@
-import {} from 'dotenv/config';
 import Knex from 'knex';
 import knexMigrate from 'knex-migrate';
 import { Model } from 'objection';
@@ -43,7 +42,7 @@ const rollbackAndMigrate = async () => {
     await knexMigrate('up', { to: 20190308111839 }, log);
     // Add any additional migrations here!
 
-    if (env !== 'test') {
+    if (env === 'development') {
       await knex.seed.run();
 
       console.log('Successfully seeded the database.');

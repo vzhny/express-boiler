@@ -1,4 +1,6 @@
-import {} from 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config({ silent: true });
 
 const env = process.env.NODE_ENV;
 

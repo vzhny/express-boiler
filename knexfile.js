@@ -1,4 +1,3 @@
-import {} from 'dotenv/config';
 import { knexSnakeCaseMappers } from 'objection';
 
 const client = 'pg';
