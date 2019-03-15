@@ -11,22 +11,18 @@ beforeEach(() => {
 
 const serverTests = () => {
   describe('GET /', () => {
-    it('should send the correct message to check the documentation', done => {
-      request(app)
-        .get('/')
-        .then(res => {
-          const { status, text } = res;
+    it('should send the correct message to check the documentation', async done => {
+      try {
+        const { status, text } = await request(app).get('/');
 
-          expect(status).toEqual(200);
-          expect(text).toEqual(`Please go to ${repository} for API usage information.`);
+        expect(status).toEqual(200);
+        expect(text).toEqual(`Please go to ${repository} for API usage information.`);
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
-
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+        done(message);
+      }
     });
   });
 };

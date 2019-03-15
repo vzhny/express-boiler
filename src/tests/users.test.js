@@ -10,7 +10,7 @@ beforeEach(() => {
 
 const userTests = () => {
   describe('POST /api/auth/register', () => {
-    it('should register a new user successfully (first user)', done => {
+    it('should register a new user successfully (first user)', async done => {
       const userInformation = {
         firstName: 'Jake',
         lastName: 'Peralta',
@@ -18,28 +18,26 @@ const userTests = () => {
         password: 'i_luv_amy',
       };
 
-      request(app)
-        .post('/api/auth/register')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { firstName, lastName, token } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/register')
+          .send(userInformation);
 
-          expect(status).toEqual(201);
-          expect(firstName).toEqual('Jake');
-          expect(lastName).toEqual('Peralta');
-          expect(token).toBeTruthy();
+        const { firstName, lastName, token } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(201);
+        expect(firstName).toEqual('Jake');
+        expect(lastName).toEqual('Peralta');
+        expect(token).toBeTruthy();
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+        done(message);
+      }
     });
 
-    it('should register a new user successfully (second  user)', done => {
+    it('should register a new user successfully (second  user)', async done => {
       const userInformation = {
         firstName: 'Amy',
         lastName: 'Santiago',
@@ -47,28 +45,27 @@ const userTests = () => {
         password: 'I_Love_Jake',
       };
 
-      request(app)
-        .post('/api/auth/register')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { firstName, lastName, token } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/register')
+          .send(userInformation);
 
-          expect(status).toEqual(201);
-          expect(firstName).toEqual('Amy');
-          expect(lastName).toEqual('Santiago');
-          expect(token).toBeTruthy();
+        const { firstName, lastName, token } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(201);
+        expect(firstName).toEqual('Amy');
+        expect(lastName).toEqual('Santiago');
+        expect(token).toBeTruthy();
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
     });
 
-    it('should fail the registration of an email already in use', done => {
+    it('should fail the registration of an email already in use', async done => {
       const userInformation = {
         firstName: 'Charles',
         lastName: 'Boyle',
@@ -76,24 +73,22 @@ const userTests = () => {
         password: 'ilovejake',
       };
 
-      request(app)
-        .post('/api/auth/register')
-        .send(userInformation)
-        .then(res => {
-          const { status } = res;
+      try {
+        const { status } = await request(app)
+          .post('/api/auth/register')
+          .send(userInformation);
 
-          expect(status).toEqual(400);
+        expect(status).toEqual(400);
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        done();
+      } catch (error) {
+        const { message } = error;
 
-          done(message);
-        });
+        done(message);
+      }
     });
 
-    it('should enforce a password minimum length of 6 characters', done => {
+    it('should enforce a password minimum length of 6 characters', async done => {
       const userInformation = {
         firstName: 'Raymond',
         lastName: 'Holt',
@@ -101,102 +96,98 @@ const userTests = () => {
         password: 'kevin',
       };
 
-      request(app)
-        .post('/api/auth/register')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { message } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/register')
+          .send(userInformation);
 
-          expect(status).toEqual(400);
-          expect(message).toEqual('Please enter a password with a length of 6 or more characters.');
+        const { message } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(400);
+        expect(message).toEqual('Please enter a password with a length of 6 or more characters.');
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
     });
   });
 
   describe('POST /api/auth/login', () => {
-    it("should respond with the user's first and last names, a true auth flag and auth token after successfully logging in", done => {
+    it("should respond with the user's first and last names, a true auth flag and auth token after successfully logging in", async done => {
       const userInformation = {
         email: 'jake@bk99.gov',
         password: 'i_luv_amy',
       };
 
-      request(app)
-        .post('/api/auth/login')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { firstName, lastName, token } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/login')
+          .send(userInformation);
 
-          expect(status).toEqual(200);
-          expect(firstName).toEqual('Jake');
-          expect(lastName).toEqual('Peralta');
-          expect(token).toBeTruthy();
+        const { firstName, lastName, token } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(200);
+        expect(firstName).toEqual('Jake');
+        expect(lastName).toEqual('Peralta');
+        expect(token).toBeTruthy();
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
     });
 
-    it('should respond with a general error message when an unregistered email address is entered', done => {
+    it('should respond with a general error message when an unregistered email address is entered', async done => {
       const userInformation = {
         email: 'terry@bk99.gov',
         password: 'lacy_and_ava',
       };
 
-      request(app)
-        .post('/api/auth/login')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { message } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/login')
+          .send(userInformation);
 
-          expect(status).toEqual(404);
-          expect(message).toEqual('Could not find user or wrong password. Please try again.');
+        const { message } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(404);
+        expect(message).toEqual('Could not find user or wrong password. Please try again.');
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
     });
 
-    it('should respond with a general error message when an incorrect password is entered', done => {
+    it('should respond with a general error message when an incorrect password is entered', async done => {
       const userInformation = {
         email: 'amy@bk99.gov',
         password: 'i_love_Jake',
       };
 
-      request(app)
-        .post('/api/auth/login')
-        .send(userInformation)
-        .then(res => {
-          const { status, body } = res;
-          const { message } = body;
+      try {
+        const { status, body } = await request(app)
+          .post('/api/auth/login')
+          .send(userInformation);
 
-          expect(status).toEqual(404);
-          expect(message).toEqual('Could not find user or wrong password. Please try again.');
+        const { message } = body;
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+        expect(status).toEqual(404);
+        expect(message).toEqual('Could not find user or wrong password. Please try again.');
 
-          done(message);
-        });
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
     });
   });
 };
