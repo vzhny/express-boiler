@@ -1,16 +1,11 @@
-import './config/config';
-import dotenv from 'dotenv';
-import path from 'path';
+import _ from '@/config/config'; // eslint-disable-line
 import express from 'express';
 import morgan from 'morgan';
 import timestamp from 'time-stamp';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from '@/api/routes';
-import { repository } from '_root/package.json';
 import '@/db/database';
-
-dotenv.config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 
@@ -28,7 +23,7 @@ app.use('/api', routes);
 
 // * / Documentation Route
 app.get('/', (req, res) => {
-  const message = `Please go to ${repository} for API usage information.`;
+  const message = 'Please go to https://github.com/vzhny/express-boiler for API usage information.';
 
   res.status(200).send(message);
 });
