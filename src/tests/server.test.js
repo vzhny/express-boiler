@@ -1,4 +1,5 @@
 import request from 'supertest';
+import to from 'await-to-js';
 import app from '@/app';
 import server from '@/server';
 import { repository } from '_root/package.json';
@@ -11,22 +12,20 @@ beforeEach(() => {
 
 const serverTests = () => {
   describe('GET /', () => {
-    it('should send the correct message to check the documentation', done => {
-      request(app)
-        .get('/')
-        .then(res => {
-          const { status, text } = res;
+    it('should send the correct message to check the documentation', async done => {
+      const [error, res] = await to(request(app).get('/'));
 
-          expect(status).toEqual(200);
-          expect(text).toEqual(`Please go to ${repository} for API usage information.`);
+      if (error) {
+        const { message } = error;
+        done(message);
+      }
 
-          done();
-        })
-        .catch(error => {
-          const { message } = error;
+      const { status, text } = res;
 
-          done(message);
-        });
+      expect(status).toEqual(200);
+      expect(text).toEqual(`Please go to ${repository} for API usage information.`);
+
+      done();
     });
   });
 };
