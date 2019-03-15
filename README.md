@@ -15,30 +15,22 @@ Feel free to fork the project, or submit pull requests if you want to add an int
 ## Features
 
 - ES6+ syntax available via Babel 7.
-- SQL database connectivity (by default set to postgreSQL) with Objection.js used as the ORM, along with Knex.
-- Full user register and log in routes and functionality with authentication via Json Web Token and token verification middleware included.
-- Testing with Jest and Supertest.
+- SQL database connectivity (by default set to postgreSQL) with Objection.js used as the ORM, along with Knex as the query builder.
+- User register and log in routes included with full authentication functionality via Json Web Token (token verification middleware also included).
+- Integration testing done with Jest and Supertest.
 - Import aliases! Use `@` to point to `./src/` and `_root` to point to `./` (the root directory).
 
 ## Requirements
 
-This project requires that postgreSQL be installed on the development machine and/or server the app will be hosted on.
+This project requires that postgreSQL be installed on the development machine and/or server the app will be hosted on. A global install of knex is not neccessary.
 
 When creating migrations, make sure to create the database beforehand to avoid any errors!
 
 ## Things to Do Before Use
 
-Create a .env file in the root of the directory, and add the following keys:
+Create a .env file in the root of the directory, and add the following keys with their respective values:
 
 ```
-PG_CONNECT_STRING
-
-JWT_SECRET
-
-PG_DB_NAME
-
-
-
 PG_CONNECT_STRING_DEV
 
 JWT_SECRET_DEV
@@ -54,14 +46,19 @@ JWT_SECRET_TEST
 PG_DB_NAME_TEST
 ```
 
+Some helpful tips:
+
+- A valid postgres connection string format is as follows: `postgres://[username]:[password]@[host]:[port]/[database-name]`.
+- Generate a 256-bit secret using the node REPL: `node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`.
+- The database name will be displayed as console output for better readability.
+
 ## Running the Project
 
 - Run `yarn dev` to launch a development environment with the app running on `localhost:3000` (or the specified port defined in `process.env.PORT`).
-- Run `yarn build` to build the project out into the `lib/` folder. The `build` command removes an existing lib/ folder when rebuilding the app.
-- Run `yarn start` to build and then start the app from the lib/ folder -- use this for production!
+- Run `yarn build` to build the project out into the `dist/lib/` folder. The `build` command removes an existing dist/ folder when rebuilding the app.
+- Run `yarn start` to build and then start the app from the `dist/lib/` folder -- use this for production!
 - Run `yarn start:es6` to start the app from the src/ folder in a production environment -- experimental use only! Currently a workaround for hosting on Heroku to bypass the 'babel-node not found' error.
-- Run `yarn knex:migrate` (with any additional flags) to run the defined migrations in the db/migrations/ folder.
-- Run `yarn knex:rollback` (with any additional flags) to rollback database migrations.
+- Run `yarn knex` (with any of the standard knex arguments such as migrate:make) to run the local install of knex if it is not installed globally.
 
 ## Husky Hooks
 
@@ -77,13 +74,14 @@ Tests are handled by Jest and API endpoint tests are done through Supertest. Bec
 The code block below is the entire contents of the `index.test.js` file.
 
 ```javascript
-import serverTests from './server.test';
-import userTests from './users.test';
+import serverTests from '@/tests/server.test';
+import userTests from '@/tests/users.test';
+import { rollbackAndMigrate, disconnectFromDatabase } from '@/db/database';
 
 /* eslint-disable jest/valid-describe */
 beforeAll(() => rollbackAndMigrate());
 
-afterAll(() => closeDatabaseConnection());
+afterAll(() => disconnectFromDatabase());
 
 describe('Server Tests', serverTests);
 describe('User Tests', userTests);
@@ -93,11 +91,23 @@ Simply import your tests and then run them in any specified order through descri
 
 Each test file utilizes the `done()` function to call the next test and so on.
 
-Also located in the tests/ folder is a `databaseSetup.js` file. This file exports two functions:
+Imported into the `index.test.js` file are two helper functions from the `database.js` file:
 
-- `rollbackAndMigrate()` is self-explanatory and is called in the `beforeAll()` jest hook in the `index.test.js` file.
-- `closeDatabaseConnection()` is self-explanatory and is called in the `afterAll()` jest hook in the `index.test.js` file.
+- `rollbackAndMigrate()` is self-explanatory and is called before any tests are ran.
+- `disconnectFromDatabase()` is self-explanatory and is called after every single test has finished running.
 
 ## To-Do/Bug List
 
-No new features or bugs at the moment!
+After running `yarn start`, while the express app builds and runs successfully, the following error occurs:
+
+```
+An error occurred when rolling back, migrating, or seeding the database. /home/vzhny/Documents/express-boiler/knexfile.js:1
+import { knexSnakeCaseMappers } from 'objection';
+       ^
+
+SyntaxError: Unexpected token {...
+```
+
+Prior to this error, the exact same error was occurring, but with `import {} from 'dotenv/config';`, which was solved by importing dotenv in a different manner. Currently looking for an answer as to why this error gets thrown.
+
+Low priority.
