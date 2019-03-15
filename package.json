@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "description": "A minimal ES6+ express app boilerplate, with included authentication!",
   "scripts": {
-    "start": "yarn run build && node lib/server.js",
-    "build": "rm -rf ./lib/ && babel src -d lib --ignore 'src/tests/'",
-    "start:es6": "NODE_ENV=production ./node_modules/@babel/node/bin/babel-node.js src/server.js",
+    "start": "yarn run build && node dist/lib/server.js",
+    "build": "rm -rf ./dist/ && babel src -d dist/lib --ignore 'src/tests/' && yarn build:knexConfig",
+    "build:knexConfig": "babel ./knexfile.js -d dist",
+    "babel-node": "./node_modules/@babel/node/bin/babel-node.js",
+    "start:es6": "NODE_ENV=production yarn babel-node src/server.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
-    "knex:migrate": "babel-node ./node_modules/knex/bin/cli.js migrate:latest",
-    "knex:rollback": "babel-node ./node_modules/knex/bin/cli.js migrate:rollback",
+    "knex": "yarn babel-node ./node_modules/knex/bin/cli.js",
     "lint": "eslint --ext .js src/",
     "test": "NODE_ENV=test jest --colors --runInBand --coverage src/tests/index.test.js"
   },
