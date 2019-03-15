@@ -12,10 +12,10 @@ const userTests = () => {
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully (first user)', done => {
       const userInformation = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john_doe@gmail.com',
-        password: 'test1234',
+        firstName: 'Jake',
+        lastName: 'Peralta',
+        email: 'jake@bk99.gov',
+        password: 'i_luv_amy',
       };
 
       request(app)
@@ -26,8 +26,8 @@ const userTests = () => {
           const { firstName, lastName, token } = body;
 
           expect(status).toEqual(201);
-          expect(firstName).toEqual('John');
-          expect(lastName).toEqual('Doe');
+          expect(firstName).toEqual('Jake');
+          expect(lastName).toEqual('Peralta');
           expect(token).toBeTruthy();
 
           done();
@@ -41,10 +41,10 @@ const userTests = () => {
 
     it('should register a new user successfully (second  user)', done => {
       const userInformation = {
-        firstName: 'Sarah',
-        lastName: 'Conner',
-        email: 'sarah_conner@gmail.com',
-        password: '1234test',
+        firstName: 'Amy',
+        lastName: 'Santiago',
+        email: 'amy@bk99.gov',
+        password: 'I_Love_Jake',
       };
 
       request(app)
@@ -55,8 +55,8 @@ const userTests = () => {
           const { firstName, lastName, token } = body;
 
           expect(status).toEqual(201);
-          expect(firstName).toEqual('Sarah');
-          expect(lastName).toEqual('Conner');
+          expect(firstName).toEqual('Amy');
+          expect(lastName).toEqual('Santiago');
           expect(token).toBeTruthy();
 
           done();
@@ -70,10 +70,10 @@ const userTests = () => {
 
     it('should fail the registration of an email already in use', done => {
       const userInformation = {
-        firstName: 'Harry',
-        lastName: 'Stevens',
-        email: 'john_doe@gmail.com',
-        password: 'test1234',
+        firstName: 'Charles',
+        lastName: 'Boyle',
+        email: 'jake@bk99.gov',
+        password: 'ilovejake',
       };
 
       request(app)
@@ -95,10 +95,10 @@ const userTests = () => {
 
     it('should enforce a password minimum length of 6 characters', done => {
       const userInformation = {
-        firstName: 'Harry',
-        lastName: 'Stevens',
-        email: 'harry_stevens@gmail.com',
-        password: 'weak',
+        firstName: 'Raymond',
+        lastName: 'Holt',
+        email: 'captain_holt@bk99.gov',
+        password: 'kevin',
       };
 
       request(app)
@@ -124,8 +124,8 @@ const userTests = () => {
   describe('POST /api/auth/login', () => {
     it("should respond with the user's first and last names, a true auth flag and auth token after successfully logging in", done => {
       const userInformation = {
-        email: 'john_doe@gmail.com',
-        password: 'test1234',
+        email: 'jake@bk99.gov',
+        password: 'i_luv_amy',
       };
 
       request(app)
@@ -136,8 +136,8 @@ const userTests = () => {
           const { firstName, lastName, token } = body;
 
           expect(status).toEqual(200);
-          expect(firstName).toEqual('John');
-          expect(lastName).toEqual('Doe');
+          expect(firstName).toEqual('Jake');
+          expect(lastName).toEqual('Peralta');
           expect(token).toBeTruthy();
 
           done();
@@ -151,8 +151,8 @@ const userTests = () => {
 
     it('should respond with a general error message when an unregistered email address is entered', done => {
       const userInformation = {
-        email: 'steve@gmail.com',
-        password: 'non-registered',
+        email: 'terry@bk99.gov',
+        password: 'lacy_and_ava',
       };
 
       request(app)
@@ -176,8 +176,8 @@ const userTests = () => {
 
     it('should respond with a general error message when an incorrect password is entered', done => {
       const userInformation = {
-        email: 'john_doe@gmail.com',
-        password: '1234test',
+        email: 'amy@bk99.gov',
+        password: 'i_love_Jake',
       };
 
       request(app)
