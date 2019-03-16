@@ -25,7 +25,7 @@ const verifyToken = (req, res, next) => {
       return handleError(res, 500, message);
     }
 
-    res.locals.userId = decoded.id;
+    res.locals.userId = decoded.userId;
   });
 
   if (didNotEncounterError) {

@@ -9,6 +9,8 @@ beforeEach(() => {
 });
 
 const userTests = () => {
+  let authToken = '';
+
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully (first user)', async done => {
       const userInformation = {
@@ -29,6 +31,8 @@ const userTests = () => {
         expect(firstName).toEqual('Jake');
         expect(lastName).toEqual('Peralta');
         expect(token).toBeTruthy();
+
+        authToken = token;
 
         done();
       } catch (error) {
@@ -181,6 +185,61 @@ const userTests = () => {
 
         expect(status).toEqual(404);
         expect(message).toEqual('Could not find user or wrong password. Please try again.');
+
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
+    });
+
+    it('should respond with a success message if the user was successfully authenticated', async done => {
+      try {
+        const { status, body } = await request(app)
+          .post('/api/authenticated')
+          .set('authentication', authToken);
+
+        const { message } = body;
+
+        expect(status).toEqual(200);
+        expect(message).toEqual('Authenticated the user successfully!');
+
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
+    });
+
+    it('should respond with an error message if no token is provided', async done => {
+      try {
+        const { status, body } = await request(app).post('/api/authenticated');
+
+        const { message } = body;
+
+        expect(status).toEqual(403);
+        expect(message).toEqual('No authentication token was provided.');
+
+        done();
+      } catch (error) {
+        const { message } = error;
+
+        done(message);
+      }
+    });
+
+    it('should respond with an error message if the user is not authenticated', async done => {
+      try {
+        const { status, body } = await request(app)
+          .post('/api/authenticated')
+          .set('authentication', 'not_valid');
+
+        const { message } = body;
+
+        expect(status).toEqual(500);
+        expect(message).toEqual('Failed to authenticate the provided token.');
 
         done();
       } catch (error) {
