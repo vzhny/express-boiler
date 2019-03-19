@@ -90,6 +90,9 @@ dist/
 # Ignoring .vscode/ folder
 .vscode/
 
+# Ignoring .coveralls.yml
+.coveralls.yml
+
 # End of https://www.gitignore.io/api/node
 
 # Created by https://www.gitignore.io/api/linux
