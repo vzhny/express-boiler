@@ -11,7 +11,7 @@
     "dev": "NODE_ENV=development nodemon --exec babel-node src/server.js",
     "knex": "yarn babel-node ./node_modules/knex/bin/cli.js",
     "lint": "eslint --ext .js src/",
-    "test": "NODE_ENV=test jest --colors --runInBand --coverage src/tests/index.test.js"
+    "test": "jest --colors --runInBand --coverage src/tests/index.test.js"
   },
   "engines": {
     "yarn": "1.13.0"
