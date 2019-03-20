@@ -4,7 +4,7 @@ import handleError from '@/api/helpers/handleError';
 /* eslint-disable consistent-return */
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authentication;
+  const { token } = req;
   // Adding an error flag to prevent the following error:
   // Uncaught Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
   let didNotEncounterError = true;
@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
   if (!token) {
     didNotEncounterError = false;
 
-    const message = 'No authentication token was provided.';
+    const message = 'No authorization token was provided.';
     return handleError(res, 403, message);
   }
 
