@@ -39,7 +39,7 @@ export const register = async (req, res) => {
   return res.status(201).json({
     firstName,
     lastName,
-    token,
+    jwt: `Bearer ${token}`,
   });
 };
 
@@ -73,7 +73,7 @@ export const login = async (req, res) => {
     return res.status(200).json({
       firstName,
       lastName,
-      token,
+      jwt: `Bearer ${token}`,
     });
   }
 
