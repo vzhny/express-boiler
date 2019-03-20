@@ -9,7 +9,7 @@ beforeEach(() => {
 });
 
 const userTests = () => {
-  let authToken = '';
+  let token = '';
 
   describe('POST /api/auth/register', () => {
     it('should register a new user successfully (first user)', async done => {
@@ -25,14 +25,14 @@ const userTests = () => {
           .post('/api/auth/register')
           .send(userInformation);
 
-        const { firstName, lastName, token } = body;
+        const { firstName, lastName, jwt } = body;
 
         expect(status).toEqual(201);
         expect(firstName).toEqual('Jake');
         expect(lastName).toEqual('Peralta');
-        expect(token).toBeTruthy();
+        expect(jwt).toBeTruthy();
 
-        authToken = token;
+        token = jwt;
 
         done();
       } catch (error) {
@@ -54,12 +54,12 @@ const userTests = () => {
           .post('/api/auth/register')
           .send(userInformation);
 
-        const { firstName, lastName, token } = body;
+        const { firstName, lastName, jwt } = body;
 
         expect(status).toEqual(201);
         expect(firstName).toEqual('Amy');
         expect(lastName).toEqual('Santiago');
-        expect(token).toBeTruthy();
+        expect(jwt).toBeTruthy();
 
         done();
       } catch (error) {
@@ -131,12 +131,12 @@ const userTests = () => {
           .post('/api/auth/login')
           .send(userInformation);
 
-        const { firstName, lastName, token } = body;
+        const { firstName, lastName, jwt } = body;
 
         expect(status).toEqual(200);
         expect(firstName).toEqual('Jake');
         expect(lastName).toEqual('Peralta');
-        expect(token).toBeTruthy();
+        expect(jwt).toBeTruthy();
 
         done();
       } catch (error) {
@@ -198,7 +198,7 @@ const userTests = () => {
       try {
         const { status, body } = await request(app)
           .post('/api/authenticated')
-          .set('authentication', authToken);
+          .set('authorization', token);
 
         const { message } = body;
 
@@ -220,7 +220,7 @@ const userTests = () => {
         const { message } = body;
 
         expect(status).toEqual(403);
-        expect(message).toEqual('No authentication token was provided.');
+        expect(message).toEqual('No authorization token was provided.');
 
         done();
       } catch (error) {
@@ -234,7 +234,7 @@ const userTests = () => {
       try {
         const { status, body } = await request(app)
           .post('/api/authenticated')
-          .set('authentication', 'not_valid');
+          .set('authorization', 'Bearer not_a_valid_token');
 
         const { message } = body;
 
