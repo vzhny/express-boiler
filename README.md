@@ -4,7 +4,10 @@
 
 Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from www.flaticon.com.
 
-![Travis (.org)](https://img.shields.io/travis/vzhny/express-boiler.svg?style=flat-square)
+![Travis (.org)](https://img.shields.io/travis/vzhny/express-boiler.svg?color=%232B7D0C&style=for-the-badge)
+![David](https://img.shields.io/david/vzhny/express-boiler.svg?color=%232B7D0C&style=for-the-badge)
+![David](https://img.shields.io/david/dev/vzhny/express-boiler.svg?color=%232B7D0C&style=for-the-badge)
+![Codacy grade](https://img.shields.io/codacy/grade/8f256d9c6d054f288b944db2ae2d151b.svg?color=%232B7D0C&style=for-the-badge)
 
 A minimal ES6+ express app boilerplate, with included authentication!
 
@@ -30,14 +33,12 @@ When creating migrations, make sure to create the database beforehand to avoid a
 
 Create a .env file in the root of the directory, and add the following keys with their respective values:
 
-```
+```env
 PG_CONNECT_STRING_DEV
 
 JWT_SECRET_DEV
 
 PG_DB_NAME_DEV
-
-
 
 PG_CONNECT_STRING_TEST
 
@@ -100,7 +101,7 @@ Imported into the `index.test.js` file are two helper functions from the `databa
 
 After running `yarn start`, while the express app builds and runs successfully, the following error occurs:
 
-```
+```javascript
 An error occurred when rolling back, migrating, or seeding the database. /home/vzhny/Documents/express-boiler/knexfile.js:1
 import { knexSnakeCaseMappers } from 'objection';
        ^
