@@ -28,7 +28,7 @@
       2,
       {
         "hoist": "all",
-        "allow": ["resolve", "reject", "done", "next", "error", "props"]
+        "allow": ["req", "res", "resolve", "reject", "done", "next", "error", "props"]
       }
     ],
     "import/no-unresolved": "off"
