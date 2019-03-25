@@ -17,11 +17,11 @@ Feel free to fork the project, or submit pull requests if you want to add an int
 
 ## Features
 
-- ES6+ syntax available via Babel 7.
-- SQL database connectivity (by default set to postgreSQL) with Objection.js used as the ORM, along with Knex as the query builder.
-- User register and log in routes included with full authentication functionality via Json Web Token (token verification middleware also included).
-- Integration testing done with Jest and Supertest.
-- Import aliases! Use `@` to point to `./src/` and `_root` to point to `./` (the root directory).
+  - ES6+ syntax available via Babel 7.
+  - SQL database connectivity (by default set to postgreSQL) with Objection.js used as the ORM, along with Knex as the query builder.
+  - User register and log in routes included with full authentication functionality via Json Web Token (token verification middleware also included).
+  - Integration testing done with Jest and Supertest.
+  - Import aliases! Use `@` to point to `./src/` and `_root` to point to `./` (the root directory).
 
 ## Requirements
 
@@ -49,24 +49,24 @@ PG_DB_NAME_TEST
 
 Some helpful tips:
 
-- A valid postgres connection string format is as follows: `postgres://[username]:[password]@[host]:[port]/[database-name]`.
-- Generate a 256-bit secret using the node REPL: `node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`.
-- The database name will be displayed as console output for better readability.
+  - A valid postgres connection string format is as follows: `postgres://[username]:[password]@[host]:[port]/[database-name]`.
+  - Generate a 256-bit secret using the node REPL: `node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"`.
+  - The database name will be displayed as console output for better readability.
 
 ## Running the Project
 
-- Run `yarn dev` to launch a development environment with the app running on `localhost:3000` (or the specified port defined in `process.env.PORT`).
-- Run `yarn build` to build the project out into the `dist/lib/` folder. The `build` command removes an existing dist/ folder when rebuilding the app.
-- Run `yarn start` to build and then start the app from the `dist/lib/` folder -- use this for production!
-- Run `yarn start:es6` to start the app from the src/ folder in a production environment -- experimental use only! Currently a workaround for hosting on Heroku to bypass the 'babel-node not found' error.
-- Run `yarn knex` (with any of the standard knex arguments such as migrate:make) to run the local install of knex if it is not installed globally.
+  - Run `yarn dev` to launch a development environment with the app running on `localhost:3000` (or the specified port defined in `process.env.PORT`).
+  - Run `yarn build` to build the project out into the `dist/lib/` folder. The `build` command removes an existing dist/ folder when rebuilding the app.
+  - Run `yarn start` to build and then start the app from the `dist/lib/` folder -- use this for production!
+  - Run `yarn start:es6` to start the app from the src/ folder in a production environment -- experimental use only! Currently a workaround for hosting on Heroku to bypass the 'babel-node not found' error.
+  - Run `yarn knex` (with any of the standard knex arguments such as migrate:make) to run the local install of knex if it is not installed globally.
 
 ## Husky Hooks
 
 This project boilerplate uses [husky](https://www.npmjs.com/package/husky) to define pre-commit and pre-push hooks, as defined below:
 
-- Pre-commit: runs `yarn lint` which uses eslint to lint all files in the src/ folder.
-- Pre-push: runs `yarn test` which runs the `index.test.js` file located in the tests/ folder -- see below for more information.
+  - Pre-commit: runs `yarn lint` which uses eslint to lint all files in the src/ folder.
+  - Pre-push: runs `yarn test` which runs the `index.test.js` file located in the tests/ folder -- see below for more information.
 
 ## Testing
 
@@ -94,8 +94,8 @@ Each test file utilizes the `done()` function to call the next test and so on.
 
 Imported into the `index.test.js` file are two helper functions from the `database.js` file:
 
-- `rollbackAndMigrate()` is self-explanatory and is called before any tests are ran.
-- `disconnectFromDatabase()` is self-explanatory and is called after every single test has finished running.
+  - `rollbackAndMigrate()` is self-explanatory and is called before any tests are ran.
+  - `disconnectFromDatabase()` is self-explanatory and is called after every single test has finished running.
 
 ## To-Do/Bug List
 
