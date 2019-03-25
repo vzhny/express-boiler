@@ -1,5 +1,6 @@
 import express from 'express';
 import { register, login } from '@/api/controllers/user.controllers';
+import authenticated from '@/api/controllers/authenticated.controllers';
 import verifyToken from '@/api/middleware/auth/verify.token';
 
 const router = express.Router();
@@ -11,10 +12,6 @@ router.route('/auth/register').post(register);
 router.route('/auth/login').post(login);
 
 // POST example authenticated route
-router.route('/authenticated').post(verifyToken, (req, res) => {
-  return res.status(200).json({
-    message: 'Authenticated the user successfully!',
-  });
-});
+router.route('/authenticated').post(verifyToken, authenticated);
 
 export default router;
