@@ -1,19 +1,16 @@
 import _ from '@/config/config'; // eslint-disable-line
 import express from 'express';
 import bearerToken from 'express-bearer-token';
-import morgan from 'morgan';
-import timestamp from 'time-stamp';
 import helmet from 'helmet';
 import cors from 'cors';
+import logger from '@/api/middleware/logger/logger';
 import routes from '@/api/routes';
 import '@/db/database';
 
 const app = express();
 
 // * Express Middleware
-if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan(`${timestamp('MM/DD/YYYY')} :method :url :status STATUS - :response-time ms`));
-}
+app.use(logger());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(helmet());
