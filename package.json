@@ -16,7 +16,7 @@
     "code-coverage": "cat ./src/tests/coverage/lcov.info | coveralls"
   },
   "engines": {
-    "yarn": "1.13.0"
+    "yarn": "1.16.0"
   },
   "main": "lib/server.js",
   "repository": "https://github.com/vzhny/express-boiler",
