@@ -1,7 +1,7 @@
 import request from 'supertest';
+import { repository } from '_root/package.json';
 import app from '@/app';
 import server from '@/server';
-import { repository } from '_root/package.json';
 
 /* eslint-disable consistent-return */
 
