@@ -15,9 +15,6 @@
     "test": "jest --coverage ./src/tests/index.test.js",
     "code-coverage": "cat ./src/tests/coverage/lcov.info | coveralls"
   },
-  "engines": {
-    "yarn": "1.16.0"
-  },
   "main": "lib/server.js",
   "repository": "https://github.com/vzhny/express-boiler",
   "author": "Diego Vizhnay <diego@vzhny.com> (https://vizhnay.io)",
